@@ -63,7 +63,7 @@ public class ChaptersRepository : IChaptersRepository
         {
             var course = await _context.Courses.Find(c => c.Id == idCourse).SingleOrDefaultAsync();
 
-            if (course == null) return DynamicResponse<int>.CreateError("No se ha encontrado el capitulo selecionado.", 404);
+            if (course == null) return DynamicResponse<int>.CreateError("No se ha encontrado el capitulo selecionado", 404);
 
             chapter--;
             
