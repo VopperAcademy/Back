@@ -1,0 +1,6 @@
+@vopperAcademyBackEnd_HostAddress = http://localhost:5298
+
+GET {{vopperAcademyBackEnd_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
