@@ -14,10 +14,10 @@ public class GetChaptersController : ControllerBase
         _chaptersRepository = chaptersRepository;
     }
 
-    [HttpGet("{idCourse}/{chapterPosition}")]
-    public async Task<IActionResult> GetChapterAsync(string idCourse, int chapterPosition)
+    [HttpGet("{idCourse}/{chapter}")]
+    public async Task<IActionResult> GetChapterAsync(string idCourse, int chapter)
     {
-        var response = await _chaptersRepository.GetChapterAsync(idCourse, chapterPosition);
+        var response = await _chaptersRepository.GetChapterAsync(idCourse, chapter);
         
         return StatusCode(response.StatusCode, response);
     }

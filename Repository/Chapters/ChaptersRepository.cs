@@ -15,7 +15,7 @@ public class ChaptersRepository : IChaptersRepository
     }
 
 
-    public async Task<DynamicResponse<Chapter>> GetChapterAsync(string idCourse ,int chapterPositionInArray)
+    public async Task<DynamicResponse<Chapter>> GetChapterAsync(string idCourse ,int chapter)
     {
         try
         {
@@ -24,12 +24,14 @@ public class ChaptersRepository : IChaptersRepository
             if (course == null)
                 return DynamicResponse<Chapter>.CreateError("No se encontro el curso.", 404);
 
-            if (chapterPositionInArray > course.Chapters.Count)
+            if (chapter > course.Chapters.Count)
                 return DynamicResponse<Chapter>.CreateError("No existe ese capitulo dentro del curso.", 404);
 
-            var chapter = course?.Chapters[chapterPositionInArray];
+            chapter--;
+            
+            var findChapter = course?.Chapters[chapter];
 
-            return DynamicResponse<Chapter>.CreateSuccess(chapter!);
+            return DynamicResponse<Chapter>.CreateSuccess(findChapter!);
         }
         catch (Exception e)
         {
@@ -43,7 +45,10 @@ public class ChaptersRepository : IChaptersRepository
         {
             var filter = Builders<Course>.Filter.Eq(c => c.Id, idCourse);
             
-            var update = Builders<Course>.Update.Push(c => c.Chapters, chapter);
+            var update = Builders<Course>.Update.Combine(
+                Builders<Course>.Update.Push(c => c.Chapters, chapter),
+                Builders<Course>.Update.Inc(c => c.ChaptersCount, 1)
+            );
             
             var updateResult = await _context.Courses.UpdateOneAsync(filter, update);
 
