@@ -10,4 +10,5 @@ public class PreviewPlatformResponseDTO
     public required string Id { get; set; }
     public required string Name { get; set; }
     public required string UrlImage { get; set; }
+    public required string Description { get; set; }
 }

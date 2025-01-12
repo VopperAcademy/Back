@@ -24,7 +24,8 @@ public class PlatformsRepository : IPlatformsRepository
             {
                 Id = p.Id!,
                 Name = p.Name,
-                UrlImage = p.UrlImage
+                UrlImage = p.UrlImage,
+                Description = p.Description
             });
             
             var platforms = await _context.Platforms.Find(new BsonDocument()).Project(projection).ToListAsync();

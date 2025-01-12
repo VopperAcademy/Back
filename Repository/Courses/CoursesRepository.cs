@@ -202,6 +202,4 @@ public class CoursesRepository : ICoursesRepository
             return DynamicResponse<FilterResponseDTO<PreviewCourseResponseDTO>>.CreateError($"Ocurrió un error al paginar los cursos. \n Error: {e.Message}");
         }
     }
-
-    
 }
