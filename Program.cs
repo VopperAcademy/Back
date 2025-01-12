@@ -23,17 +23,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.Configure<FormOptions>(options =>
-{
-    // Establece el límite para el tamaño de los archivos
-    options.MultipartBodyLengthLimit = 10L * 1024L * 1024L * 1024L; // 10 GB, ajusta según sea necesario
-});
-
-builder.WebHost.ConfigureKestrel(options =>
-{
-    // Establece el límite para el tamaño del cuerpo de la solicitud
-    options.Limits.MaxRequestBodySize = 10L * 1024L * 1024L * 1024L; // 10 GB
-});
 
 builder.Services.AddCors(options =>
 {
@@ -58,10 +47,5 @@ app.UseCors("AllowAll");
 
 app.MapControllers();
 
-app.Use(async (context, next) =>
-{
-    Console.WriteLine($"Request: {context.Request.Method} {context.Request.Path}");
-    await next.Invoke();
-});
 
 app.Run();
