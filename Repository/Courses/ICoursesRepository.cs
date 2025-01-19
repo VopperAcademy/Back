@@ -1,5 +1,6 @@
 ﻿using vopperAcademyBackEnd.Models;
 using vopperAcademyBackEnd.Models.DTOs;
+using vopperAcademyBackEnd.Models.DTOs.Request.Courses;
 using vopperAcademyBackEnd.Models.DTOs.Response;
 using vopperAcademyBackEnd.Models.DTOs.Response.Courses;
 using vopperAcademyBackEnd.Models.DTOs.Response.Platforms;
@@ -15,4 +16,6 @@ public interface ICoursesRepository
     Task<DynamicResponse<Course>> GetCourseByIdAsync(string id);
     Task<DynamicResponse<FilterResponseWithPlatformDTO<PreviewCourseResponseDTO>>> GetCoursesByPlatformAsync(string idPlatform);
     
+    //POST
+    Task<DynamicResponse<string>> PostCourseAsync(CourseRequestDTO courseRequestDto);
 }

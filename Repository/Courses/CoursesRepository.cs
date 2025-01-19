@@ -5,6 +5,7 @@ using MongoDB.Driver.Linq;
 using vopperAcademyBackEnd.Data;
 using vopperAcademyBackEnd.Models;
 using vopperAcademyBackEnd.Models.DTOs;
+using vopperAcademyBackEnd.Models.DTOs.Request.Courses;
 using vopperAcademyBackEnd.Models.DTOs.Response.Courses;
 using vopperAcademyBackEnd.Models.DTOs.Response.Platforms;
 
@@ -204,6 +205,33 @@ public class CoursesRepository : ICoursesRepository
         catch (Exception e)
         {
             return DynamicResponse<FilterResponseWithPlatformDTO<PreviewCourseResponseDTO>>.CreateError($"Ocurrió un error al paginar los cursos. \n Error: {e.Message}");
+        }
+    }
+
+    public async Task<DynamicResponse<string>> PostCourseAsync(CourseRequestDTO courseRequestDto)
+    {
+        try
+        {
+            Course courseDtoToCourse = new()
+            {
+                Title = courseRequestDto.Title,
+                Description = courseRequestDto.Description,
+                Categories = courseRequestDto.Categories,
+                Chapters = [],
+                ChaptersCount = 0,
+                ImageUrl = courseRequestDto.ImageUrl,
+                Platform = courseRequestDto.PlatformId,
+                Teacher = courseRequestDto.Teacher,
+                Date = courseRequestDto.Date
+            };
+
+            await _context.Courses.InsertOneAsync(courseDtoToCourse);
+            
+            return DynamicResponse<string>.CreateSuccess(courseDtoToCourse.Id!);
+        }
+        catch (Exception e)
+        {
+            return DynamicResponse<string>.CreateError("$\"Ocurrió un error al crear el curso. \\n Error: {e.Message}\"");
         }
     }
 }
