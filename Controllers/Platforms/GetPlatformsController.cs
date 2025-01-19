@@ -21,12 +21,4 @@ public class GetPlatformsController : ControllerBase
 
         return StatusCode(response.StatusCode, response);
     }
-
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetPlatformAsync(string id)
-    {
-        var response = await _platformsRepository.GetPlatformByIdAsync(id);
-        
-        return StatusCode(response.StatusCode, response);
-    }
 }

@@ -6,6 +6,7 @@ using vopperAcademyBackEnd.Data;
 using vopperAcademyBackEnd.Models;
 using vopperAcademyBackEnd.Models.DTOs;
 using vopperAcademyBackEnd.Models.DTOs.Response.Courses;
+using vopperAcademyBackEnd.Models.DTOs.Response.Platforms;
 
 namespace vopperAcademyBackEnd.Repository.Courses;
 
@@ -174,7 +175,7 @@ public class CoursesRepository : ICoursesRepository
         }
     }
 
-    public async Task<DynamicResponse<FilterResponseDTO<PreviewCourseResponseDTO>>> GetCoursesByPlatformAsync(string idPlatform)
+    public async Task<DynamicResponse<FilterResponseWithPlatformDTO<PreviewCourseResponseDTO>>> GetCoursesByPlatformAsync(string idPlatform)
     {
         try
         {
@@ -186,20 +187,25 @@ public class CoursesRepository : ICoursesRepository
                 Teacher = c.Teacher,
                 ImageUrl = c.ImageUrl
             });
+
+            var platform = await _context.Platforms.Find(p => p.Id == idPlatform).SingleOrDefaultAsync();
             
             var courses = await _context.Courses.Find(c => c.Platform == idPlatform).Project(projection).ToListAsync();
 
             return courses is not { Count: > 0 }
-                ? DynamicResponse<FilterResponseDTO<PreviewCourseResponseDTO>>.CreateError("No se encontraron cursos para esta plataforma.", 404)
-                : DynamicResponse<FilterResponseDTO<PreviewCourseResponseDTO>>.CreateSuccess(new FilterResponseDTO<PreviewCourseResponseDTO>()
+                ? DynamicResponse<FilterResponseWithPlatformDTO<PreviewCourseResponseDTO>>.CreateError("No se encontraron cursos para esta plataforma.", 404)
+                : DynamicResponse<FilterResponseWithPlatformDTO<PreviewCourseResponseDTO>>.CreateSuccess(new FilterResponseWithPlatformDTO<PreviewCourseResponseDTO>()
                 {
                     FilterCourses = courses,
-                    TotalCourses = courses.Count
+                    TotalCourses = courses.Count,
+                    NamePlatform = platform.Name,
+                    DescriptionPlatform = platform.Description,
+                    ImagePlatform = platform.UrlImage
                 });
         }
         catch (Exception e)
         {
-            return DynamicResponse<FilterResponseDTO<PreviewCourseResponseDTO>>.CreateError($"Ocurrió un error al paginar los cursos. \n Error: {e.Message}");
+            return DynamicResponse<FilterResponseWithPlatformDTO<PreviewCourseResponseDTO>>.CreateError($"Ocurrió un error al paginar los cursos. \n Error: {e.Message}");
         }
     }
 }

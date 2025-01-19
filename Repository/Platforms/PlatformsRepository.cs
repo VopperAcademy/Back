@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using System.Collections.ObjectModel;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using vopperAcademyBackEnd.Data;
 using vopperAcademyBackEnd.Models;
@@ -38,20 +39,5 @@ public class PlatformsRepository : IPlatformsRepository
             return DynamicResponse<List<PreviewPlatformResponseDTO>>.CreateError($"Ocurrió un error al paginar los cursos. \n Error: {e.Message}");
         }
     }
-
-    public async Task<DynamicResponse<Platform>> GetPlatformByIdAsync(string id)
-    {
-        try
-        {
-            var platform = await _context.Platforms.Find(p => p.Id == id).SingleOrDefaultAsync();
-
-            return platform == null
-                ? DynamicResponse<Platform>.CreateError("No se encontro la plataforma buscada", 404)
-                : DynamicResponse<Platform>.CreateSuccess(platform);
-        }
-        catch (Exception e)
-        {
-            return DynamicResponse<Platform>.CreateError($"Ocurrió un error al paginar los cursos. \n Error: {e.Message}");
-        }
-    }
+    
 }
