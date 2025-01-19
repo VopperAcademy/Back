@@ -11,6 +11,4 @@ public class Platform
     public required string Name { get; set; }
     public required string Description { get; set; }
     public required string UrlImage { get; set; }
-    [BsonRepresentation(BsonType.ObjectId)]
-    public List<string> CoursesId { get; set; } = [];
 }

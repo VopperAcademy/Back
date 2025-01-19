@@ -192,16 +192,14 @@ public class CoursesRepository : ICoursesRepository
             
             var courses = await _context.Courses.Find(c => c.Platform == idPlatform).Project(projection).ToListAsync();
 
-            return courses is not { Count: > 0 }
-                ? DynamicResponse<FilterResponseWithPlatformDTO<PreviewCourseResponseDTO>>.CreateError("No se encontraron cursos para esta plataforma.", 404)
-                : DynamicResponse<FilterResponseWithPlatformDTO<PreviewCourseResponseDTO>>.CreateSuccess(new FilterResponseWithPlatformDTO<PreviewCourseResponseDTO>()
-                {
-                    FilterCourses = courses,
-                    TotalCourses = courses.Count,
-                    NamePlatform = platform.Name,
-                    DescriptionPlatform = platform.Description,
-                    ImagePlatform = platform.UrlImage
-                });
+            return DynamicResponse<FilterResponseWithPlatformDTO<PreviewCourseResponseDTO>>.CreateSuccess(new FilterResponseWithPlatformDTO<PreviewCourseResponseDTO>()
+            {
+                FilterCourses = courses,
+                TotalCourses = courses.Count,
+                NamePlatform = platform.Name,
+                DescriptionPlatform = platform.Description,
+                ImagePlatform = platform.UrlImage
+            });
         }
         catch (Exception e)
         {
