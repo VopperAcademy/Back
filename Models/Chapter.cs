@@ -2,6 +2,7 @@
 
 public class Chapter
 {
+    public string CourseId { get; set; } = Guid.NewGuid().ToString();
     public required string Title { get; set; }
     public required string Duration { get; set; }
     public required string Url { get; set; }
