@@ -1,4 +1,4 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+﻿FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 RUN apt-get update && apt-get install -y openssl ca-certificates
 USER $APP_UID
 WORKDIR /app
